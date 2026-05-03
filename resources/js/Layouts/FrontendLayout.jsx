@@ -1,15 +1,14 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { Link, usePage, Head } from '@inertiajs/react';
 
-export default function FrontendLayout({ title, children }) {
+export default function FrontendLayout({ children, title }) {
     const { auth } = usePage().props;
     const user = auth?.user;
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
         <>
-            <Head title={title} />
-            <div className="min-h-screen bg-gray-50 flex flex-col">
+            <Head title={title ?? "SewaMobil - Rental Kendaraan Terpercaya"} />
+
+            <div className="bg-gray-50 text-gray-900 font-sans flex flex-col min-h-screen">
                 {/* Navbar */}
                 <nav className="bg-white shadow-sm sticky top-0 z-50">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,72 +18,48 @@ export default function FrontendLayout({ title, children }) {
                                     SewaMobil
                                 </Link>
                                 <div className="hidden md:flex ml-10 space-x-8">
-                                    <Link href={route('home')} className={route().current('home') ? 'text-gray-900 font-medium' : 'text-gray-500 hover:text-gray-900'}>
+                                    <Link href={route('home')} className="text-gray-900 font-medium">
                                         Beranda
                                     </Link>
-                                    <Link href={route('catalog.index')} className={route().current('catalog.index') ? 'text-gray-900 font-medium' : 'text-gray-500 hover:text-gray-900'}>
+                                    <Link href={route('catalog.index')} className="text-gray-500 hover:text-gray-900">
                                         Katalog
                                     </Link>
-                                    <Link href={route('about')} className={route().current('about') ? 'text-gray-900 font-medium' : 'text-gray-500 hover:text-gray-900'}>
+                                    <Link href={route('about')} className="text-gray-500 hover:text-gray-900">
                                         Tentang Kami
+                                    </Link>
+                                    <Link href={route('contact')} className="text-gray-500 hover:text-gray-900">
+                                        Kontak
                                     </Link>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-4">
                                 {user ? (
-                                    <>
-                                        {user.role === 'admin' ? (
-                                            <Link href={route('admin.dashboard')} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm font-medium">
-                                                Dashboard Admin
-                                            </Link>
-                                        ) : (
-                                            <Link href={route('profile.dashboard')} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm font-medium">
-                                                Akun Saya
-                                            </Link>
-                                        )}
-                                    </>
+                                    user.role === 'admin' ? (
+                                        <Link href={route('admin.dashboard')} className="text-gray-500 hover:text-gray-900 font-medium">
+                                            Admin Panel
+                                        </Link>
+                                    ) : (
+                                        <Link href={route('profile.dashboard')} className="text-gray-500 hover:text-gray-900 font-medium">
+                                            Akun Saya
+                                        </Link>
+                                    )
                                 ) : (
                                     <>
                                         <Link href={route('login')} className="text-gray-500 hover:text-gray-900 font-medium">
                                             Masuk
                                         </Link>
-                                        <Link href={route('register')} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm">
+                                        <Link href={route('register')} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
                                             Daftar
                                         </Link>
                                     </>
                                 )}
-                                {/* Mobile menu button */}
-                                <button className="md:hidden ml-2 p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path className={mobileMenuOpen ? 'hidden' : 'block'} strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                                        <path className={mobileMenuOpen ? 'block' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
                             </div>
                         </div>
                     </div>
-                    {/* Mobile menu */}
-                    {mobileMenuOpen && (
-                        <div className="md:hidden border-t border-gray-100 py-2">
-                            <Link href={route('home')} className="block px-4 py-2 text-gray-700 hover:bg-gray-50">Beranda</Link>
-                            <Link href={route('catalog.index')} className="block px-4 py-2 text-gray-700 hover:bg-gray-50">Katalog</Link>
-                            <Link href={route('about')} className="block px-4 py-2 text-gray-700 hover:bg-gray-50">Tentang Kami</Link>
-                            {user ? (
-                                <Link href={user.role === 'admin' ? route('admin.dashboard') : route('profile.dashboard')} className="block px-4 py-2 text-indigo-600 hover:bg-gray-50 font-medium">
-                                    {user.role === 'admin' ? 'Dashboard Admin' : 'Akun Saya'}
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link href={route('login')} className="block px-4 py-2 text-gray-700 hover:bg-gray-50">Masuk</Link>
-                                    <Link href={route('register')} className="block px-4 py-2 text-indigo-600 hover:bg-gray-50">Daftar</Link>
-                                </>
-                            )}
-                        </div>
-                    )}
                 </nav>
 
-                {/* Page Content */}
-                <main className="flex-grow">{children}</main>
+                {/* Content */}
+                <main className="flex-grow pt-16">{children}</main>
 
                 {/* Footer */}
                 <footer className="bg-gray-800 text-white mt-16">
@@ -100,6 +75,7 @@ export default function FrontendLayout({ title, children }) {
                                     <li><Link href={route('home')} className="hover:text-white">Beranda</Link></li>
                                     <li><Link href={route('catalog.index')} className="hover:text-white">Katalog</Link></li>
                                     <li><Link href={route('about')} className="hover:text-white">Tentang Kami</Link></li>
+                                    <li><Link href={route('contact')} className="hover:text-white">Kontak</Link></li>
                                 </ul>
                             </div>
                             <div>

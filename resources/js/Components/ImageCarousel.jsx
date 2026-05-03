@@ -17,7 +17,7 @@ export default function ImageCarousel({ images }) {
     return (
         <div className="relative w-full">
             <div className="relative h-80 rounded-lg overflow-hidden bg-gray-200">
-                <img src={images[currentIndex].url_foto} alt="" className="w-full h-full object-cover" />
+                <img src={`/storage/${images[currentIndex].url_foto}`} alt="" className="w-full h-full object-cover" />
                 {images.length > 1 && (
                     <>
                         <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow">

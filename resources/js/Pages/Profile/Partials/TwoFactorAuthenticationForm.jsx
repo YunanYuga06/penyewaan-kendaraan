@@ -1,9 +1,9 @@
+import { useState } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
-import { useState } from 'react';
 
 export default function TwoFactorAuthenticationForm({ confirmsTwoFactorAuthentication }) {
     const user = usePage().props.auth.user;

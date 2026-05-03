@@ -1,0 +1,245 @@
+import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
+
+/**
+ * Admin Dashboard — standalone layout (does NOT use FrontendLayout).
+ * Typically rendered inside an AdminLayout or directly as the root page.
+ */
+export default function Dashboard({
+    activeBookings = 12,
+    availableCars = 8,
+    serviceAlerts = 2,
+    todayIncome = 'Rp 4.2jt',
+    recentBookings = [],
+}) {
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    const handleLogout = () => {
+        router.post(route('logout'));
+    };
+
+    const stats = [
+        {
+            label: 'Pemesanan Aktif',
+            value: activeBookings,
+            color: 'text-slate-900',
+            bg: 'bg-white',
+            border: 'border-slate-200',
+            icon: (
+                <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+            ),
+        },
+        {
+            label: 'Armada Tersedia',
+            value: availableCars,
+            color: 'text-emerald-600',
+            bg: 'bg-white',
+            border: 'border-emerald-100',
+            icon: (
+                <svg className="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            ),
+        },
+        {
+            label: 'Alert Servis',
+            value: serviceAlerts,
+            color: 'text-rose-700',
+            bg: 'bg-rose-50/30',
+            border: 'border-rose-100',
+            labelClass: 'text-rose-600 font-bold',
+            icon: (
+                <svg className="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            ),
+        },
+        {
+            label: 'Pendapatan Hari Ini',
+            value: todayIncome,
+            color: 'text-slate-900',
+            bg: 'bg-white',
+            border: 'border-slate-200',
+            icon: (
+                <svg className="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            ),
+        },
+    ];
+
+    const navItems = [
+        { label: 'Dashboard', route: 'admin', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+        { label: 'Kendaraan', route: 'admin.kendaraan.index', icon: 'M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0' },
+        { label: 'Pemesanan', route: 'admin.bookings.index', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
+        { label: 'Pengguna', route: 'admin.users.index', icon: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z' },
+    ];
+
+    return (
+        <>
+            <Head title="Dashboard Admin | Petahunan Rent Car" />
+
+            <div className="flex h-screen bg-slate-100 font-sans text-slate-800 overflow-hidden">
+
+                {/* Sidebar */}
+                <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-slate-900 text-white flex flex-col transition-all duration-300 shrink-0`}>
+                    {/* Logo */}
+                    <div className="h-16 flex items-center px-6 border-b border-slate-800">
+                        {sidebarOpen ? (
+                            <span className="font-extrabold text-lg tracking-tight">
+                                Petahunan<span className="text-blue-400">Rent</span>
+                                <span className="ml-2 text-xs font-normal bg-slate-700 px-2 py-0.5 rounded text-slate-300">Admin</span>
+                            </span>
+                        ) : (
+                            <span className="font-extrabold text-lg text-blue-400">PR</span>
+                        )}
+                    </div>
+
+                    {/* Nav */}
+                    <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.label}
+                                href={route().has(item.route) ? route(item.route) : '#'}
+                                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition text-sm font-medium"
+                            >
+                                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
+                                </svg>
+                                {sidebarOpen && <span>{item.label}</span>}
+                            </Link>
+                        ))}
+                    </nav>
+
+                    {/* Logout */}
+                    <div className="p-4 border-t border-slate-800">
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-rose-400 hover:bg-rose-900/30 hover:text-rose-300 transition text-sm font-medium w-full"
+                        >
+                            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            {sidebarOpen && <span>Keluar</span>}
+                        </button>
+                    </div>
+                </aside>
+
+                {/* Main Content */}
+                <div className="flex-1 flex flex-col overflow-hidden">
+                    {/* Top Bar */}
+                    <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
+                        <button
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
+                            className="text-slate-500 hover:text-slate-900 transition"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <div className="flex items-center gap-3">
+                            <span className="text-sm text-slate-500">Administrator</span>
+                            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">A</div>
+                        </div>
+                    </header>
+
+                    {/* Scrollable Content */}
+                    <main className="flex-1 overflow-y-auto p-8">
+                        <div className="mb-6">
+                            <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+                            <p className="text-slate-500 text-sm mt-1">Selamat datang kembali di panel admin Petahunan Rent.</p>
+                        </div>
+
+                        {/* Stats Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            {stats.map((stat) => (
+                                <div
+                                    key={stat.label}
+                                    className={`${stat.bg} p-6 rounded-xl border ${stat.border} shadow-sm flex items-start justify-between`}
+                                >
+                                    <div>
+                                        <p className={`text-sm ${stat.labelClass ?? 'text-slate-500'}`}>{stat.label}</p>
+                                        <p className={`text-3xl font-bold mt-1 ${stat.color}`}>{stat.value}</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-2 rounded-lg">{stat.icon}</div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Recent Bookings Table */}
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="p-5 border-b border-slate-200 flex justify-between items-center">
+                                <h2 className="font-bold text-slate-900">Permintaan Booking Terbaru</h2>
+                                <Link href={route().has('admin.bookings.index') ? route('admin.bookings.index') : '#'} className="text-sm text-blue-600 hover:underline font-medium">
+                                    Lihat Semua
+                                </Link>
+                            </div>
+                            <table className="w-full text-left text-sm">
+                                <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+                                    <tr>
+                                        <th className="px-6 py-3 font-semibold">Penyewa</th>
+                                        <th className="px-6 py-3 font-semibold">Mobil</th>
+                                        <th className="px-6 py-3 font-semibold">Tanggal</th>
+                                        <th className="px-6 py-3 font-semibold">Status</th>
+                                        <th className="px-6 py-3 font-semibold">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    {recentBookings.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="5" className="text-center p-8 text-slate-400">
+                                                Belum ada data pemesanan.
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        recentBookings.map((booking) => (
+                                            <tr key={booking.id} className="hover:bg-slate-50 transition">
+                                                <td className="px-6 py-4 font-medium text-slate-900">
+                                                    {booking.user?.name ?? booking.nama_penyewa}
+                                                </td>
+                                                <td className="px-6 py-4 text-slate-600">
+                                                    {booking.kendaraan?.merk}
+                                                </td>
+                                                <td className="px-6 py-4 text-slate-600">
+                                                    {booking.tanggal_sewa
+                                                        ? new Date(booking.tanggal_sewa).toLocaleDateString('id-ID')
+                                                        : '-'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                                                        booking.status === 'dikonfirmasi'
+                                                            ? 'bg-emerald-100 text-emerald-700'
+                                                            : booking.status === 'menunggu'
+                                                            ? 'bg-amber-100 text-amber-700'
+                                                            : 'bg-blue-100 text-blue-700'
+                                                    }`}>
+                                                        {booking.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <Link
+                                                        href={route().has('admin.bookings.show') ? route('admin.bookings.show', booking.id) : '#'}
+                                                        className="text-blue-600 hover:text-blue-700 font-medium text-xs"
+                                                    >
+                                                        Detail →
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </>
+    );
+}

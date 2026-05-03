@@ -1,5 +1,5 @@
-import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
+import { Head, useForm } from '@inertiajs/react';
 import AuthenticationCard from '@/Components/AuthenticationCard';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo';
 import InputError from '@/Components/InputError';

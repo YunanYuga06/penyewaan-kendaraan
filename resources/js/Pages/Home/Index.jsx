@@ -1,116 +1,96 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link, usePage, Head } from '@inertiajs/react';
 import FrontendLayout from '@/Layouts/FrontendLayout';
 
-export default function Home() {
+export default function Home({ featuredVehicles = [] }) {
+    const { auth } = usePage().props;
+    const user = auth?.user;
+
     return (
-        <FrontendLayout>
-            <Head title="Beranda | Petahunan Rent" />
+        <FrontendLayout title="SewaMobil - Rental Kendaraan Terpercaya">
+            <Head title="SewaMobil - Rental Kendaraan Terpercaya" />
 
-            {/* START: Hero Section */}
-            <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                    <div className="flex flex-col lg:flex-row items-center gap-12">
-                        <div className="w-full lg:w-1/2 text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-primary text-sm font-semibold mb-6">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                                </span>
-                                Booking Mandiri 24/7 Kini Tersedia
-                            </div>
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
-                                Perjalanan Nyaman,<br />
-                                <span className="text-primary">Tanpa Ribet.</span>
-                            </h1>
-                            <p className="text-lg text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                                Sewa mobil di Petahunan, Banyumas kini lebih mudah. Pilih armada, bayar DP, dan nikmati perjalanan Anda dengan kendaraan yang selalu dalam kondisi prima.
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                {/* Menggunakan Inertia Link agar navigasi ke katalog terasa instan (SPA) */}
-                                <Link href={route('catalog.index')} className="bg-primary text-white px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-primaryHover transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                                    Pilih Mobil Sekarang
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                    </svg>
-                                </Link>
-                                <a href="#keunggulan" className="bg-white text-slate-700 border border-slate-200 px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-slate-50 transition flex items-center justify-center">
-                                    Cara Booking
-                                </a>
-                            </div>
-                        </div>
-
-                        {/* Hero Image & Floating Badge */}
-                        <div className="w-full lg:w-1/2 relative">
-                            <div className="relative w-full aspect-[4/3] lg:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-                                <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1000" alt="Rental Mobil Petahunan" className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
-                            </div>
-                            {/* Floating Badge */}
-                            <div className="absolute -bottom-6 -left-6 lg:bottom-10 lg:-left-10 bg-white p-4 rounded-xl shadow-xl border border-slate-100 flex items-center gap-4 animate-bounce" style={{ animationDuration: '3s' }}>
-                                <div className="bg-emerald-100 p-3 rounded-full text-emerald-600">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-slate-500 font-medium">GPS Tracking</p>
-                                    <p className="text-slate-900 font-bold">100% Aman</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+            {/* Hero Section */}
+            <section className="relative bg-indigo-900 py-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Rental Kendaraan Mudah & Terpercaya</h1>
+                    <p className="text-xl text-indigo-200 mb-8 max-w-2xl mx-auto">Pilihan kendaraan terbaik untuk perjalanan bisnis, liburan, atau kebutuhan harian Anda.</p>
+                    <form className="max-w-2xl mx-auto bg-white rounded-lg p-4 shadow-lg flex gap-4">
+                        <input type="text" placeholder="Cari kendaraan..." className="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <button type="submit" className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 font-medium">Cari</button>
+                    </form>
                 </div>
             </section>
-            {/* END: Hero Section */}
 
-            {/* START: Features Section */}
-            <section id="keunggulan" className="py-20 bg-white border-t border-slate-100">
+            {/* Featured Vehicles */}
+            <section className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold text-gray-900">Kendaraan Unggulan</h2>
+                    <p className="mt-4 text-gray-600">Pilihan terbaik untuk kebutuhan Anda</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {(featuredVehicles || []).slice(0, 3).map((vehicle) => {
+                        const mainPhoto = vehicle.galeri?.find(g => g.is_utama) || vehicle.galeri?.[0];
+                        return (
+                            <div key={vehicle.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                                <div className="relative h-48 bg-gray-200">
+                                    <div className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-semibold ${
+                                        vehicle.status === 'Tersedia' ? 'bg-green-500 text-white' :
+                                        vehicle.status === 'Disewa' ? 'bg-yellow-500 text-white' :
+                                        'bg-red-500 text-white'
+                                    }`}>{vehicle.status}</div>
+                                    {mainPhoto ? (
+                                        <img src={`/storage/${mainPhoto.url_foto}`} alt={vehicle.merk} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="flex items-center justify-center h-full text-gray-400">
+                                            <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="p-6">
+                                    <h3 className="text-lg font-semibold text-gray-900">{vehicle.merk}</h3>
+                                    <p className="text-sm text-gray-500">{vehicle.jenis || 'N/A'} - {vehicle.plat_nomor}</p>
+                                    <div className="mt-4 flex justify-between items-center">
+                                        <span className="text-2xl font-bold text-indigo-600">Rp {Number(vehicle.harga_sewa_per_hari).toLocaleString('id-ID')}<span className="text-sm text-gray-500 font-normal">/hari</span></span>
+                                        <Link href={route('catalog.show', vehicle.id)} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm">Detail</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </section>
+
+            {/* Why Choose Us */}
+            <section className="bg-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Mengapa Memilih Petahunan Rent?</h2>
-                        <p className="text-slate-500 text-lg">Kami bertransformasi dari sistem manual menjadi platform digital untuk memberikan pelayanan yang lebih cepat, tepat, dan responsif kepada Anda.</p>
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl font-bold text-gray-900">Mengapa Memilih Kami?</h2>
                     </div>
-
-                    <div className="grid md:grid-cols-3 gap-10">
-                        {/* Feature 1 */}
-                        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition">
-                            <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6">
-                                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                </svg>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="text-center p-6">
+                            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">Booking Mandiri 24 Jam</h3>
-                            <p className="text-slate-600 leading-relaxed">Selesaikan seluruh alur pemesanan secara mandiri dari layar ponsel Anda dalam hitungan menit. Tanpa perlu antre membalas pesan admin.</p>
+                            <h3 className="text-lg font-semibold mb-2">Terpercaya & Aman</h3>
+                            <p className="text-gray-600">Semua kendaraan terawat dan diasuransikan</p>
                         </div>
-
-                        {/* Feature 2 */}
-                        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition">
-                            <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 mb-6">
-                                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
+                        <div className="text-center p-6">
+                            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">Armada Selalu Prima</h3>
-                            <p className="text-slate-600 leading-relaxed">Sistem kami memantau perawatan rutin secara otomatis, memastikan armada yang Anda sewa terhindar dari kendala teknis.</p>
+                            <h3 className="text-lg font-semibold mb-2">Harga Transparan</h3>
+                            <p className="text-gray-600">Tidak ada biaya tersembunyi</p>
                         </div>
-
-                        {/* Feature 3 */}
-                        <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition">
-                            <div className="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6">
-                                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"></path>
-                                </svg>
+                        <div className="text-center p-6">
+                            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">Transparansi Biaya</h3>
-                            <p className="text-slate-600 leading-relaxed">Hitung total sewa, DP 25%, dan biaya layanan tambahan secara transparan langsung di website. Tidak ada biaya tersembunyi.</p>
+                            <h3 className="text-lg font-semibold mb-2">Proses Cepat</h3>
+                            <p className="text-gray-600">Booking online dalam hitungan menit</p>
                         </div>
                     </div>
                 </div>
             </section>
-            {/* END: Features Section */}
-
         </FrontendLayout>
     );
 }

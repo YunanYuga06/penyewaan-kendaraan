@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pembayaran;
 use App\Models\Pemesanan;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
@@ -19,27 +17,43 @@ class PaymentController extends Controller
     {
         $validated = $request->validate([
             'bukti_transfer' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'jenis_bayar' => 'required|in:DP,Pelunasan,Denda',
+            'ktp' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $pemesanan = Pemesanan::findOrFail($pemesananId);
+        $pemesanan = Pemesanan::with('pembayaran')->findOrFail($pemesananId);
 
         $penyewa = $pemesanan->penyewa;
         if ($penyewa->user_id !== Auth::id()) {
             abort(403);
         }
 
+        if ($pemesanan->pembayaran->where('status_bayar', '!=', 'Ditolak')->isNotEmpty()) {
+            return back()->withErrors(['error' => 'Bukti pembayaran sudah diunggah.']);
+        }
+
         $buktiUrl = $this->fileUploadService->upload('bukti_transfer', 'bukti_transfer');
 
+        $ktpUrl = null;
+        if ($request->hasFile('ktp')) {
+            $ktpUrl = $this->fileUploadService->upload('ktp', 'ktp');
+        }
+
+        $dpAmount = $pemesanan->total_biaya * 0.25;
+
         $pemesanan->pembayaran()->create([
-            'jenis_bayar' => $validated['jenis_bayar'],
+            'jenis_bayar' => 'DP',
             'metode_bayar' => 'Transfer Bank',
-            'nominal' => $pemesanan->total_biaya,
+            'nominal' => $dpAmount,
             'bukti_transfer' => $buktiUrl,
             'status_bayar' => 'Menunggu',
             'tgl_bayar' => now(),
         ]);
 
-        return back()->with('success', 'Bukti pembayaran berhasil diunggah.');
+        if ($ktpUrl) {
+            $pemesanan->update(['ktp_url' => $ktpUrl]);
+        }
+
+        return redirect()->route('checkout-success', $pemesanan->id)
+            ->with('success', 'Bukti pembayaran berhasil diunggah.');
     }
 }

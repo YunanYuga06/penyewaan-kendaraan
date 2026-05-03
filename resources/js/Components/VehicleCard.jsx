@@ -7,7 +7,7 @@ export default function VehicleCard({ vehicle }) {
         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <div className="relative h-48 bg-gray-200">
                 {mainPhoto ? (
-                    <img src={mainPhoto.url_foto} alt={vehicle.merk} className="w-full h-full object-cover" />
+                    <img src={`/storage/${mainPhoto.url_foto}`} alt={vehicle.merk} className="w-full h-full object-cover" />
                 ) : (
                     <div className="flex items-center justify-center h-full text-gray-400">
                         <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -28,8 +28,8 @@ export default function VehicleCard({ vehicle }) {
                 <p className="text-sm text-gray-500">{vehicle.plat_nomor}</p>
                 <div className="mt-3 flex items-center justify-between">
                     <div>
-                        <span className="text-xl font-bold text-indigo-600">Rp {Number(vehicle.harga_sewa_per_jam).toLocaleString('id-ID')}</span>
-                        <span className="text-sm text-gray-500">/jam</span>
+                        <span className="text-xl font-bold text-indigo-600">Rp {Number(vehicle.harga_sewa_per_hari).toLocaleString('id-ID')}</span>
+                        <span className="text-sm text-gray-500">/hari</span>
                     </div>
                     <Link
                         href={route('catalog.show', vehicle.id)}

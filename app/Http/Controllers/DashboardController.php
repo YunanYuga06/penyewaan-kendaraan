@@ -30,4 +30,22 @@ class DashboardController extends Controller
             'pemesanan' => $pemesanan,
         ]);
     }
+
+    public function show(int $id)
+    {
+        $user = Auth::user();
+        $penyewa = Penyewa::where('user_id', $user->id)->first();
+
+        if (!$penyewa) {
+            abort(403);
+        }
+
+        $pemesanan = Pemesanan::with(['kendaraan.galeri', 'pembayaran', 'layanan'])
+            ->where('penyewa_id', $penyewa->id)
+            ->findOrFail($id);
+
+        return Inertia::render('Dashboard/RiwayatShow', [
+            'pemesanan' => $pemesanan,
+        ]);
+    }
 }

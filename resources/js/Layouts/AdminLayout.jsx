@@ -24,6 +24,7 @@ export default function AdminLayout({ title, children }) {
                                     <Link href={route('admin.dashboard')} className={navClass('admin.dashboard')}>Dashboard</Link>
                                     <Link href={route('admin.kendaraan.index')} className={navClass('admin.kendaraan.index')}>Kendaraan</Link>
                                     <Link href={route('admin.pemesanan.index')} className={navClass('admin.pemesanan.index')}>Pemesanan</Link>
+                                    <Link href={route('admin.pembayaran.index')} className={navClass('admin.pembayaran.index')}>Pembayaran</Link>
                                 </div>
                             </div>
                             <div className="hidden sm:flex sm:items-center sm:ms-6">

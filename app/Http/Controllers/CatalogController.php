@@ -15,42 +15,42 @@ class CatalogController extends Controller
             ->where('status', 'Tersedia');
 
         if ($request->filled('merk')) {
-            $query->where('merk', $request->merk);
+            $query->where('merk', 'like', '%' . $request->merk . '%');
         }
 
         if ($request->filled('min_price')) {
-            $query->where('harga_sewa_per_jam', '>=', $request->min_price);
+            $query->where('harga_sewa_per_hari', '>=', $request->min_price);
         }
 
         if ($request->filled('max_price')) {
-            $query->where('harga_sewa_per_jam', '<=', $request->max_price);
+            $query->where('harga_sewa_per_hari', '<=', $request->max_price);
         }
 
-        $vehicles = $query->orderBy('harga_sewa_per_jam')->paginate(12);
+        $kendaraan = $query->orderBy('harga_sewa_per_hari')->paginate(12);
 
         return Inertia::render('Catalog/Index', [
-            'vehicles' => $vehicles,
+            'kendaraan' => $kendaraan,
             'filters' => $request->only(['merk', 'min_price', 'max_price']),
         ]);
     }
 
     public function show(int $id)
     {
-        $vehicle = Kendaraan::with('galeri')
+        $kendaraan = Kendaraan::with('galeri')
             ->findOrFail($id);
 
-        if ($vehicle->status !== 'Tersedia') {
+        if ($kendaraan->status !== 'Tersedia') {
             abort(404, 'Kendaraan tidak tersedia.');
         }
 
-        $vehicle->load(['galeri' => function ($q) {
+        $kendaraan->load(['galeri' => function ($q) {
             $q->orderBy('is_utama', 'desc');
         }]);
 
         $addOns = LayananTambahan::all();
 
         return Inertia::render('Catalog/Show', [
-            'vehicle' => $vehicle,
+            'kendaraan' => $kendaraan,
             'addOns' => $addOns,
         ]);
     }

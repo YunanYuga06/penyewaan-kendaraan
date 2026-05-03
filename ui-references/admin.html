@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin | Petahunan Rent Car</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#2563eb',
+                        primaryDark: '#1e40af',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+        <div class="p-6 text-white font-extrabold text-xl tracking-tight border-b border-slate-800">
+            Petahunan<span class="text-primary">Admin</span>
+        </div>
+        
+        <nav class="flex-grow p-4 space-y-2">
+            <a href="#" class="flex items-center gap-3 p-3 bg-primary text-white rounded-lg font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Dashboard
+            </a>
+            <div class="pt-4 pb-2 text-xs font-bold uppercase text-slate-500 px-3">Kelola Master</div>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg transition">Armada Mobil</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg transition">Data Penyewa</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg transition">Pengantar (Supir)</a>
+            
+            <div class="pt-4 pb-2 text-xs font-bold uppercase text-slate-500 px-3">Monitoring</div>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg transition">Booking Masuk</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg transition text-rose-400">Peringatan GPS</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg transition">Laporan Keuangan</a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button class="w-full flex items-center gap-3 p-3 text-slate-400 hover:text-white transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Logout
+            </button>
+        </div>
+    </aside>
+    <main class="flex-grow overflow-y-auto bg-slate-50">
+        
+        <header class="bg-white border-b border-slate-200 p-4 sticky top-0 z-10 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-slate-800">Ikhtisar Operasional</h1>
+            <div class="flex items-center gap-4">
+                <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-primaryDark transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Booking Manual
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Pemesanan Aktif</p>
+                    <p class="text-3xl font-bold text-slate-900">12</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Armada Tersedia</p>
+                    <p class="text-3xl font-bold text-emerald-600">8</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-rose-100 shadow-sm bg-rose-50/30">
+                    <p class="text-sm font-medium text-rose-600 mb-1 italic font-bold">Alert Servis (3000KM)</p>
+                    <p class="text-3xl font-bold text-rose-700">2 <span class="text-sm font-normal">Unit</span></p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Pendapatan Hari Ini</p>
+                    <p class="text-3xl font-bold text-slate-900">Rp 4.2jt</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 flex justify-between items-center">
+                        <h2 class="font-bold text-slate-800">Permintaan Booking Terbaru</h2>
+                        <a href="#" class="text-primary text-sm font-bold hover:underline">Lihat Semua</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-slate-500 text-xs font-bold uppercase">
+                                <tr>
+                                    <th class="px-6 py-3">Penyewa</th>
+                                    <th class="px-6 py-3">Mobil</th>
+                                    <th class="px-6 py-3">Durasi</th>
+                                    <th class="px-6 py-3">Status DP</th>
+                                    <th class="px-6 py-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50/50">
+                                    <td class="px-6 py-4">
+                                        <div class="font-bold text-slate-800 text-sm">Fajar Ramadhan</div>
+                                        <div class="text-[10px] text-slate-400">Pekuncen, Banyumas</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm">Avanza Veloz</td>
+                                    <td class="px-6 py-4 text-sm font-medium">3 Hari</td>
+                                    <td class="px-6 py-4">
+                                        <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Sudah Bayar</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-slate-800 transition">Proses</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/50">
+                                    <td class="px-6 py-4">
+                                        <div class="font-bold text-slate-800 text-sm">Yunan Yuga</div>
+                                        <div class="text-[10px] text-slate-400">Purwokerto</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm">Xpander</td>
+                                    <td class="px-6 py-4 text-sm font-medium">1 Hari</td>
+                                    <td class="px-6 py-4">
+                                        <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Menunggu</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-slate-800 transition">Proses</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                    <div class="p-4 border-b border-slate-100 bg-rose-50/50 flex justify-between items-center">
+                        <h2 class="font-bold text-rose-700 flex items-center gap-2">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                            </span>
+                            Pemantauan GPS Aktif
+                        </h2>
+                    </div>
+                    <div class="flex-grow bg-slate-200 relative flex items-center justify-center h-64 lg:h-auto overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        <div class="text-center z-10 p-6">
+                            <p class="text-xs font-bold text-slate-500 uppercase mb-2">Simulasi Geofencing Banyumas</p>
+                            <div class="bg-white/90 backdrop-blur p-4 rounded-lg shadow-lg border border-slate-200 max-w-xs">
+                                <p class="text-[11px] text-rose-600 font-extrabold mb-1">!! PERINGATAN AREA !!</p>
+                                <p class="text-xs text-slate-700">Unit <strong>[R 1234 XY]</strong> keluar batas Desa Petahunan.</p>
+                                <button class="mt-3 w-full bg-rose-600 text-white text-[10px] font-bold py-1.5 rounded uppercase hover:bg-rose-700">Kirim Notifikasi WA</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-3 bg-slate-50 text-xs">
+                        <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                            <span class="text-slate-500">Mobil: <strong>Veloz - R 4444 AB</strong></span>
+                            <span class="text-emerald-600 font-bold">Dalam Jalur</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                            <span class="text-slate-500">Mobil: <strong>Brio - R 5555 CD</strong></span>
+                            <span class="text-emerald-600 font-bold">Dalam Jalur</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end">
+                <div class="flex gap-4">
+                    <button class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-primary transition bg-white border border-slate-200 px-4 py-2 rounded-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
+                        Ekspor Laporan (PDF)
+                    </button>
+                    <button class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-primary transition bg-white border border-slate-200 px-4 py-2 rounded-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Ekspor Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

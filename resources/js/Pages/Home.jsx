@@ -11,23 +11,23 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <div className="flex flex-col lg:flex-row items-center gap-12">
                         <div className="w-full lg:w-1/2 text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-primary text-sm font-semibold mb-6">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-sm font-semibold mb-6">
                                 <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
                                 </span>
                                 Booking Mandiri 24/7 Kini Tersedia
                             </div>
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
                                 Perjalanan Nyaman,<br />
-                                <span className="text-primary">Tanpa Ribet.</span>
+                                <span className="text-blue-600">Tanpa Ribet.</span>
                             </h1>
                             <p className="text-lg text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
                                 Sewa mobil di Petahunan, Banyumas kini lebih mudah. Pilih armada, bayar DP, dan nikmati perjalanan Anda dengan kendaraan yang selalu dalam kondisi prima.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 {/* Menggunakan Inertia Link agar navigasi ke katalog terasa instan (SPA) */}
-                                <Link href={route('catalog')} className="bg-primary text-white px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-primaryHover transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                                <Link href={route('catalog')} className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-blue-600Hover transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
                                     Pilih Mobil Sekarang
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -75,7 +75,7 @@ export default function Home() {
                     <div className="grid md:grid-cols-3 gap-10">
                         {/* Feature 1 */}
                         <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition">
-                            <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6">
+                            <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
                                 <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                 </svg>

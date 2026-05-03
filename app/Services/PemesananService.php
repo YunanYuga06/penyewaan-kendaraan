@@ -6,15 +6,15 @@ use Carbon\Carbon;
 
 class PemesananService
 {
-    public function calculateTotalCost(Carbon $startDate, Carbon $endDate, float $pricePerHour, float $addOnsTotal = 0): float
+    public function calculateTotalCost(Carbon $startDate, Carbon $endDate, float $pricePerDay, float $addOnsTotal = 0): float
     {
-        $hours = $startDate->diffInHours($endDate);
+        $days = $startDate->diffInDays($endDate);
 
-        if ($hours <= 0) {
+        if ($days <= 0) {
             throw new \InvalidArgumentException('Tanggal kembali harus lebih besar dari tanggal sewa.');
         }
 
-        return ($hours * $pricePerHour) + $addOnsTotal;
+        return ($days * $pricePerDay) + $addOnsTotal;
     }
 
     public function calculateDP(float $totalCost): float
@@ -24,14 +24,14 @@ class PemesananService
 
     public function calculateLateFee(Carbon $plannedReturn, Carbon $actualReturn): float
     {
-        $lateHours = $plannedReturn->diffInHours($actualReturn);
+        $lateDays = $plannedReturn->diffInDays($actualReturn);
 
-        if ($lateHours <= 0) {
+        if ($lateDays <= 0) {
             return 0;
         }
 
-        $ratePerHour = $lateHours > 5 ? 20000 : 15000;
+        $ratePerDay = $lateDays > 5 ? 500000 : 300000;
 
-        return $lateHours * $ratePerHour;
+        return $lateDays * $ratePerDay;
     }
 }

@@ -1,9 +1,9 @@
+import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { useState } from 'react';
 
 export default function LogoutOtherBrowserSessionsForm({ sessions }) {
     const [confirmingLogout, setConfirmingLogout] = useState(false);

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Penyewa;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
@@ -10,17 +11,16 @@ use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
-    /**
-     * Validate and update the given user's profile information.
-     *
-     * @param  array<string, mixed>  $input
-     */
     public function update(User $user, array $input): void
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'nik' => ['nullable', 'string', 'max:16'],
+            'no_hp' => ['nullable', 'string', 'max:20'],
+            'alamat' => ['nullable', 'string'],
+            'no_darurat' => ['nullable', 'string', 'max:20'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -36,13 +36,22 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'],
             ])->save();
         }
+
+        $penyewaData = array_filter([
+            'nik' => $input['nik'] ?? null,
+            'no_hp' => $input['no_hp'] ?? null,
+            'alamat' => $input['alamat'] ?? null,
+            'no_darurat' => $input['no_darurat'] ?? null,
+        ], fn($v) => $v !== null);
+
+        if (!empty($penyewaData)) {
+            $user->penyewa()->updateOrCreate(
+                ['user_id' => $user->id],
+                $penyewaData
+            );
+        }
     }
 
-    /**
-     * Update the given verified user's profile information.
-     *
-     * @param  array<string, string>  $input
-     */
     protected function updateVerifiedUser(User $user, array $input): void
     {
         $user->forceFill([
@@ -52,5 +61,19 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->save();
 
         $user->sendEmailVerificationNotification();
+
+        $penyewaData = array_filter([
+            'nik' => $input['nik'] ?? null,
+            'no_hp' => $input['no_hp'] ?? null,
+            'alamat' => $input['alamat'] ?? null,
+            'no_darurat' => $input['no_darurat'] ?? null,
+        ], fn($v) => $v !== null);
+
+        if (!empty($penyewaData)) {
+            $user->penyewa()->updateOrCreate(
+                ['user_id' => $user->id],
+                $penyewaData
+            );
+        }
     }
 }

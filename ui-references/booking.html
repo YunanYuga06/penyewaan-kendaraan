@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Kendaraan | Petahunan Rent Car</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#2563eb',
+                        primaryHover: '#1d4ed8',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans pb-20">
+
+    <nav class="bg-white shadow-sm mb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="font-bold text-xl text-primary">Petahunan Rent</a>
+                <span class="text-slate-400 text-sm font-medium italic">Langkah 2 dari 3: Konfirmasi Pesanan</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <div class="w-full lg:w-2/3 space-y-6">
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm">1</span>
+                        Informasi Identitas Penyewa
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap (Sesuai KTP)</label>
+                            <input type="text" class="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Masukkan nama lengkap">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Nomor Telepon / WA</label>
+                            <input type="tel" class="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Contoh: 081234567xxx">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Nomor Darurat</label>
+                            <input type="tel" class="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="Nomor keluarga/kerabat">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm">2</span>
+                        Unggah Berkas Persyaratan
+                    </h2>
+                    <div class="p-4 bg-blue-50 text-blue-700 rounded-lg text-sm mb-6 flex gap-3">
+                        <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                        <p>Dokumen Anda akan dienkripsi dan disimpan secara aman. Kami menjamin kerahasiaan data pribadi Anda sesuai dengan Kebijakan Privasi kami.</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Foto KTP (Asli)</label>
+                            <div class="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-primary transition cursor-pointer bg-slate-50">
+                                <input type="file" class="hidden" id="ktp-upload">
+                                <label for="ktp-upload" class="cursor-pointer">
+                                    <svg class="w-8 h-8 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                    <span class="text-sm text-slate-600">Klik untuk unggah KTP</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Pas Foto / Selfie</label>
+                            <div class="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-primary transition cursor-pointer bg-slate-50">
+                                <input type="file" class="hidden" id="photo-upload">
+                                <label for="photo-upload" class="cursor-pointer">
+                                    <svg class="w-8 h-8 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    <span class="text-sm text-slate-600">Klik untuk unggah Foto</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-1/3">
+                <div class="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden sticky top-24">
+                    <div class="bg-slate-900 text-white p-4">
+                        <h3 class="font-bold">Ringkasan Pemesanan</h3>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+                            <div class="w-20 h-14 bg-slate-100 rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Toyota Avanza Veloz</h4>
+                                <p class="text-xs text-slate-500">Manual • 7 Kursi</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 mb-6">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600">Durasi Sewa</span>
+                                <div class="flex items-center gap-2">
+                                    <input type="number" id="duration" value="1" min="1" class="w-12 p-1 border rounded text-center font-bold">
+                                    <span class="text-sm">Hari</span>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <span class="text-sm font-semibold text-slate-700 block">Layanan Tambahan (Add-ons)</span>
+                                <label class="flex justify-between items-center text-sm p-2 bg-slate-50 rounded border border-slate-200 cursor-pointer">
+                                    <span class="flex items-center gap-2">
+                                        <input type="checkbox" id="addon-supir" class="rounded text-primary">
+                                        Layanan Supir
+                                    </span>
+                                    <span class="font-medium">+Rp 150.000</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 pt-4 border-t border-slate-100">
+                            <div class="flex justify-between text-slate-600">
+                                <span>Biaya Sewa</span>
+                                <span id="base-price">Rp 350.000</span>
+                            </div>
+                            <div class="flex justify-between text-slate-600">
+                                <span>Add-ons</span>
+                                <span id="addon-price">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-slate-900 text-lg pt-2">
+                                <span>Total Tagihan</span>
+                                <span id="total-price">Rp 350.000</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-emerald-800 font-bold">Uang Muka (DP 25%)</span>
+                                <span class="text-emerald-800 font-extrabold text-xl" id="dp-value">Rp 87.500</span>
+                            </div>
+                            <p class="text-[10px] text-emerald-600">Sisa pelunasan dibayarkan saat kendaraan diantar ke lokasi Anda.</p>
+                        </div>
+
+                        <button class="w-full bg-primary text-white py-4 rounded-xl font-bold mt-6 hover:bg-primaryHover transition shadow-lg">
+                            Konfirmasi & Bayar DP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const pricePerDay = 350000;
+        const supirPrice = 150000;
+
+        const durationInput = document.getElementById('duration');
+        const addonSupir = document.getElementById('addon-supir');
+        
+        const basePriceDisplay = document.getElementById('base-price');
+        const addonPriceDisplay = document.getElementById('addon-price');
+        const totalPriceDisplay = document.getElementById('total-price');
+        const dpValueDisplay = document.getElementById('dp-value');
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        function calculate() {
+            const duration = parseInt(durationInput.value) || 1;
+            const subtotalSewa = pricePerDay * duration;
+            const subtotalAddon = addonSupir.checked ? (supirPrice * duration) : 0;
+            const total = subtotalSewa + subtotalAddon;
+            const dp = total * 0.25; // Logika DP 25% sesuai SRS
+
+            basePriceDisplay.innerText = formatRupiah(subtotalSewa);
+            addonPriceDisplay.innerText = formatRupiah(subtotalAddon);
+            totalPriceDisplay.innerText = formatRupiah(total);
+            dpValueDisplay.innerText = formatRupiah(dp);
+        }
+
+        durationInput.addEventListener('input', calculate);
+        addonSupir.addEventListener('change', calculate);
+
+        // Inisialisasi awal
+        calculate();
+    </script>
+
+</body>
+</html>

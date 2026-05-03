@@ -21,6 +21,33 @@ class AdminBookingController extends Controller
         ]);
     }
 
+    public function paymentsIndex()
+    {
+        $pembayaran = Pembayaran::with(['pemesanan' => function ($q) {
+            $q->with(['penyewa.user', 'kendaraan']);
+        }])
+            ->where('status_bayar', 'Menunggu')
+            ->latest('tgl_bayar')
+            ->paginate(15);
+
+        return Inertia::render('Admin/Payments/Index', [
+            'pembayaran' => $pembayaran,
+            'flash' => [
+                'success' => session('success'),
+            ],
+        ]);
+    }
+
+
+    public function show(Pemesanan $pemesanan)
+    {
+        $pemesanan->load(['penyewa.user', 'kendaraan.galeri', 'pembayaran', 'layanan']);
+
+        return Inertia::render('Admin/Bookings/Show', [
+            'pemesanan' => $pemesanan,
+        ]);
+    }
+
     public function verifyPayment(Request $request, Pembayaran $pembayaran)
     {
         $validated = $request->validate([
@@ -38,7 +65,7 @@ class AdminBookingController extends Controller
             }
         }
 
-        return back()->with('success', 'Pembayaran berhasil diverifikasi.');
+        return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil diverifikasi.');
     }
 
     public function updateStatus(Request $request, Pemesanan $pemesanan)

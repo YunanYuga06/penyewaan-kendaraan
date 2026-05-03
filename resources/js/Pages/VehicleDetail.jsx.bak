@@ -1,0 +1,298 @@
+import { useState } from 'react';
+import { Link, Head, useForm } from '@inertiajs/react';
+import FrontendLayout from '@/Layouts/FrontendLayout';
+
+export default function VehicleDetail({ vehicle, galeri = [], activeImageDefault = null }) {
+    const [activeImage, setActiveImage] = useState(activeImageDefault ?? (galeri[0]?.path_foto ?? null));
+    const [durasi, setDurasi] = useState(1);
+
+    const { data, setData, errors } = useForm({
+        tanggal_sewa: '',
+        nama_penyewa: '',
+        lokasi_penjemputan: '',
+        trip_tujuan: '',
+        jam_jemput: '',
+    });
+
+    const formatRupiah = (number) => new Intl.NumberFormat('id-ID').format(number);
+
+    const incrementDurasi = () => setDurasi((d) => d + 1);
+    const decrementDurasi = () => setDurasi((d) => Math.max(1, d - 1));
+
+    const buildWhatsappMessage = () => {
+        const msg = encodeURIComponent(
+            `Halo, saya ingin booking:\n` +
+            `Kendaraan: ${vehicle?.merk}\n` +
+            `Durasi: ${durasi} hari\n` +
+            `Tanggal: ${data.tanggal_sewa}\n` +
+            `Nama: ${data.nama_penyewa}\n` +
+            `Lokasi Jemput: ${data.lokasi_penjemputan}\n` +
+            `Tujuan: ${data.trip_tujuan}\n` +
+            `Jam Jemput: ${data.jam_jemput}`
+        );
+        return `https://wa.me/6281200000000?text=${msg}`;
+    };
+
+    const hargaCoret = vehicle ? Math.round(vehicle.harga_sewa_per_hari * 1.15) : 0;
+
+    return (
+        <FrontendLayout title={`${vehicle?.merk ?? 'Detail Kendaraan'} | Petahunan Rent Car`}>
+            <Head title={`${vehicle?.merk ?? 'Detail'} | Petahunan Rent Car`} />
+
+            <div className="bg-slate-50 min-h-screen py-10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                    {/* Breadcrumb */}
+                    <nav className="mb-6 text-sm text-slate-500 font-medium">
+                        <Link href={route('home')} className="hover:text-blue-600">Beranda</Link>
+                        <span className="mx-2">/</span>
+                        <Link href={route('catalog')} className="hover:text-blue-600">Katalog</Link>
+                        <span className="mx-2">/</span>
+                        <span className="text-slate-800">{vehicle?.merk}</span>
+                    </nav>
+
+                    {/* Main Card */}
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col lg:flex-row p-6 md:p-8 gap-8 lg:gap-12">
+
+                        {/* Left: Gallery */}
+                        <div className="w-full lg:w-1/2 flex flex-col">
+                            {/* Main Image */}
+                            <div className="w-full aspect-[4/3] bg-slate-100 rounded-xl overflow-hidden relative mb-4 border border-slate-200">
+                                <div className="absolute top-4 left-4 z-10">
+                                    <span className="bg-blue-600/90 backdrop-blur text-white px-4 py-1.5 rounded-lg text-sm font-bold shadow-sm">
+                                        {vehicle?.jenis}
+                                    </span>
+                                </div>
+                                {activeImage ? (
+                                    <img
+                                        src={`/storage/${activeImage}`}
+                                        alt={vehicle?.merk}
+                                        className="w-full h-full object-cover transition-all duration-300"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-slate-400">
+                                        Tidak ada foto
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Thumbnails */}
+                            {galeri.length > 0 && (
+                                <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                                    {galeri.map((foto) => (
+                                        <button
+                                            key={foto.id}
+                                            onClick={() => setActiveImage(foto.path_foto)}
+                                            className={`relative aspect-[4/3] rounded-lg overflow-hidden border-2 transition-all ${
+                                                activeImage === foto.path_foto
+                                                    ? 'border-blue-600 ring-2 ring-blue-600/20'
+                                                    : 'border-transparent hover:border-slate-300'
+                                            }`}
+                                        >
+                                            <img
+                                                src={`/storage/${foto.path_foto}`}
+                                                alt=""
+                                                className="w-full h-full object-cover"
+                                            />
+                                            {activeImage !== foto.path_foto && (
+                                                <div className="absolute inset-0 bg-black/20 hover:bg-transparent transition-colors"></div>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Right: Info & Booking Form */}
+                        <div className="w-full lg:w-1/2">
+                            {/* Vehicle Info */}
+                            <div className="mb-6">
+                                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                                    {vehicle?.merk}
+                                </h1>
+
+                                {/* Specs Row */}
+                                <div className="flex flex-wrap gap-4 mt-3 text-sm font-medium text-slate-600">
+                                    <span className="flex items-center gap-1.5">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                        </svg>
+                                        {vehicle?.transmisi ?? 'Manual / AT'}
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        {vehicle?.tahun ?? '2022+'}
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                        Bensin
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                        {vehicle?.jenis === 'MPV' ? '7 Kursi' : '5 Kursi'}
+                                    </span>
+                                </div>
+
+                                {/* Pricing */}
+                                <div className="mt-4 flex items-center gap-3">
+                                    <span className="line-through text-slate-400 text-lg font-medium">
+                                        Rp {formatRupiah(hargaCoret)}
+                                    </span>
+                                    <span className="text-3xl font-extrabold text-slate-900">
+                                        Rp {formatRupiah(vehicle?.harga_sewa_per_hari ?? 0)}
+                                    </span>
+                                    <span className="border border-slate-300 text-slate-500 text-xs px-2 py-1 rounded-md font-semibold">
+                                        / Hari
+                                    </span>
+                                </div>
+                                <p className="text-xs text-slate-500 mt-2">
+                                    Harga spesial untuk area eks-Karesidenan Banyumas. Booking sekarang untuk memastikan ketersediaan unit!
+                                </p>
+                            </div>
+
+                            {/* Booking Form */}
+                            <div className="space-y-4">
+                                {/* Durasi & Tanggal */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-1">Durasi (Hari)</label>
+                                        <div className="flex items-center">
+                                            <button
+                                                type="button"
+                                                onClick={decrementDurasi}
+                                                className="bg-slate-100 border border-slate-300 text-slate-600 px-3 py-2.5 rounded-l-lg hover:bg-slate-200 transition font-bold"
+                                            >
+                                                -
+                                            </button>
+                                            <input
+                                                type="text"
+                                                value={durasi}
+                                                readOnly
+                                                className="w-full text-center border-y border-slate-300 bg-white py-2.5 text-sm font-bold focus:outline-none"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={incrementDurasi}
+                                                className="bg-blue-600 border border-blue-600 text-white px-3 py-2.5 rounded-r-lg hover:bg-blue-700 transition font-bold"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                                            Tanggal Sewa <span className="text-rose-500">*</span>
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={data.tanggal_sewa}
+                                            onChange={(e) => setData('tanggal_sewa', e.target.value)}
+                                            required
+                                            className="w-full border border-slate-300 rounded-lg p-2.5 text-sm shadow-sm focus:border-blue-600 focus:ring focus:ring-blue-600/50"
+                                        />
+                                        {errors.tanggal_sewa && <span className="text-rose-500 text-xs">{errors.tanggal_sewa}</span>}
+                                    </div>
+                                </div>
+
+                                {/* Nama Penyewa */}
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                                        Nama Penyewa <span className="text-rose-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={data.nama_penyewa}
+                                        onChange={(e) => setData('nama_penyewa', e.target.value)}
+                                        required
+                                        placeholder="Masukkan nama penyewa"
+                                        className="w-full border border-slate-300 rounded-lg p-2.5 text-sm shadow-sm focus:border-blue-600 focus:ring focus:ring-blue-600/50"
+                                    />
+                                </div>
+
+                                {/* Lokasi Penjemputan */}
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                                        Lokasi Penjemputan <span className="text-rose-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={data.lokasi_penjemputan}
+                                        onChange={(e) => setData('lokasi_penjemputan', e.target.value)}
+                                        required
+                                        placeholder="Contoh: Stasiun Purwokerto"
+                                        className="w-full border border-slate-300 rounded-lg p-2.5 text-sm shadow-sm focus:border-blue-600 focus:ring focus:ring-blue-600/50"
+                                    />
+                                </div>
+
+                                {/* Trip Tujuan */}
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                                        Trip Tujuan <span className="text-rose-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={data.trip_tujuan}
+                                        onChange={(e) => setData('trip_tujuan', e.target.value)}
+                                        required
+                                        placeholder="Contoh: Purwokerto - Baturraden"
+                                        className="w-full border border-slate-300 rounded-lg p-2.5 text-sm shadow-sm focus:border-blue-600 focus:ring focus:ring-blue-600/50"
+                                    />
+                                </div>
+
+                                {/* Jam Jemput */}
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                                        Jam Penjemputan <span className="text-rose-500">*</span>
+                                    </label>
+                                    <input
+                                        type="time"
+                                        value={data.jam_jemput}
+                                        onChange={(e) => setData('jam_jemput', e.target.value)}
+                                        required
+                                        className="w-full border border-slate-300 rounded-lg p-2.5 text-sm shadow-sm focus:border-blue-600 focus:ring focus:ring-blue-600/50"
+                                    />
+                                </div>
+
+                                {/* CTA Buttons */}
+                                <div className="pt-4 mt-2 border-t border-slate-100 flex gap-3">
+                                    <Link
+                                        href={route('booking.create', { kendaraan: vehicle?.id })}
+                                        className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-sm transition-colors shadow-sm"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Booking Sekarang
+                                    </Link>
+
+                                    <a
+                                        href={buildWhatsappMessage()}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white py-3.5 rounded-xl font-bold text-sm transition-colors shadow-sm"
+                                    >
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                        </svg>
+                                        Tanya lewat WA
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </FrontendLayout>
+    );
+}

@@ -16,6 +16,8 @@ class Penyewa extends Model
     protected $fillable = [
         'user_id',
         'nik',
+        'no_hp',
+        'alamat',
         'no_darurat',
         'foto_diri',
         'status_verifikasi',

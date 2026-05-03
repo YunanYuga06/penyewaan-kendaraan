@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
-import { useState } from 'react';
 
 export default function DeleteUserForm() {
     const [confirmingDeletion, setConfirmingDeletion] = useState(false);
